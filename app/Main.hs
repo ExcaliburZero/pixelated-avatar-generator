@@ -1,6 +1,6 @@
 module Main where
 
-import Data.String.Strip
+import Graphics.Avatars.Pixelated
 
 main :: IO ()
-main = interact strip
+main = putStrLn "Hello, World!"

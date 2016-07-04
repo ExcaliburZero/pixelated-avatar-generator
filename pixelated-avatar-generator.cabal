@@ -15,14 +15,18 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Data.String.Strip
+  exposed-modules:     Graphics.Avatars.Pixelated
   build-depends:       base >= 4.7 && < 5
+                     , JuicyPixels >= 3.2.7
+                     , bytestring >= 0.10.6.0
+                     , pureMD5 >= 2.1.0.0
+  ghc-options:         -Wall
   default-language:    Haskell2010
 
 executable pixelated-avatar-generator
   hs-source-dirs:      app
   main-is:             Main.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:       base
                      , pixelated-avatar-generator
   default-language:    Haskell2010
