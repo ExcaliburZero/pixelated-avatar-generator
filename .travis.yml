@@ -1,0 +1,43 @@
+language: haskell
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.stack
+    - $HOME/.cabal
+
+ghc:
+  - 7.8
+
+before_install:
+  # Download and unpack the stack executable
+  - mkdir -p ~/.local/bin
+  - export PATH=$HOME/.local/bin:$PATH
+  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+
+  # Setup Stack and install dependencies for tools
+  - stack setup --no-terminal
+  - cabal install doctest
+  - stack install stack-hpc-coveralls --no-terminal
+
+install:
+  # Install the program's dependencies with Stack
+  - stack install --only-dependencies --no-terminal
+
+  # Install the dependencies with Cabal to allow doctest to work
+  - cabal install --only-dependencies
+
+script:
+  # Build and test the program
+  - stack build --no-terminal --coverage
+  - stack test --no-terminal --coverage
+  - doctest $(find src -name "*.hs")
+
+  # Generate the documentation and check the package validity
+  - stack haddock --no-terminal
+  - cabal check
+
+after_script:
+  # Send a test coverage report to Coveralls.io
+  - shc pixelated-avatar-generator unit-tests
