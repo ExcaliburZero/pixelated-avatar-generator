@@ -20,6 +20,7 @@ library
                      , JuicyPixels >= 3.2.7
                      , bytestring >= 0.10.6.0
                      , pureMD5 >= 2.1.0.0
+                     , split >= 0.2.3.0
   ghc-options:         -Wall
   default-language:    Haskell2010
 

@@ -34,3 +34,34 @@ spec = do
       colorFromSeed (Seed {unSeed = "cd000000000000000000000000000000"}) `shouldBe` Red
     it "can choose Yellow" $ do
       colorFromSeed (Seed {unSeed = "ef000000000000000000000000000000"}) `shouldBe` Yellow
+  describe "generateAvatarGrid" $ do
+    it "creates an avatar grid from a seed" $ do
+      generateAvatarGrid (Seed {unSeed = "8b1a9953c4611296a827abf8c47804d7"})
+        `shouldBe` helloAvatarGrid
+  describe "AvatarGrid" $ do
+    it "can be represented as a String" $ do
+      show helloAvatarGrid `shouldBe` helloAvatarGridString
+
+helloAvatarGrid :: AvatarGrid
+helloAvatarGrid = AvatarGrid ([
+      [True, True, False, True, True, False, True, True]
+    , [True, True, False, False, False, False, True, True]
+    , [True, False, False, False, False, False, False, True]
+    , [False, False, True, False, False, True, False, False]
+    , [True, True, False, False, False, False, True, True]
+    , [True, True, True, True, True, True, True, True]
+    , [True, False, False, True, True, False, False, True]
+    , [False, False, True, False, False, True, False, False]
+  ])
+
+helloAvatarGridString :: String
+helloAvatarGridString = (init . unlines) [
+    "██ ██ ██"
+  , "██    ██"
+  , "█      █"
+  , "  █  █  "
+  , "██    ██"
+  , "████████"
+  , "█  ██  █"
+  , "  █  █  "
+  ]
