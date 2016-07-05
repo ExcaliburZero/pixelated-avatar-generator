@@ -14,4 +14,23 @@ spec :: Spec
 spec = do
   describe "createSeed" $ do
     it "creates a seed using an md5 checksum" $ do
-      show (createSeed "") `shouldBe` "Seed {unSeed = d41d8cd98f00b204e9800998ecf8427e}"
+      createSeed "" `shouldBe` Seed {unSeed = "d41d8cd98f00b204e9800998ecf8427e"}
+  describe "colorFromSeed" $ do
+    it "picks a color based on the given seed" $ do
+      colorFromSeed (Seed {unSeed = "d41d8cd98f00b204e9800998ecf8427e"}) `shouldBe` Orange
+    it "can choose Black" $ do
+      colorFromSeed (Seed {unSeed = "01000000000000000000000000000000"}) `shouldBe` Black
+    it "can choose Blue" $ do
+      colorFromSeed (Seed {unSeed = "23000000000000000000000000000000"}) `shouldBe` Blue
+    it "can choose Green" $ do
+      colorFromSeed (Seed {unSeed = "45000000000000000000000000000000"}) `shouldBe` Green
+    it "can choose Grey" $ do
+      colorFromSeed (Seed {unSeed = "67000000000000000000000000000000"}) `shouldBe` Grey
+    it "can choose Orange" $ do
+      colorFromSeed (Seed {unSeed = "89000000000000000000000000000000"}) `shouldBe` Orange
+    it "can choose Purple" $ do
+      colorFromSeed (Seed {unSeed = "ab000000000000000000000000000000"}) `shouldBe` Purple
+    it "can choose Red" $ do
+      colorFromSeed (Seed {unSeed = "cd000000000000000000000000000000"}) `shouldBe` Red
+    it "can choose Yellow" $ do
+      colorFromSeed (Seed {unSeed = "ef000000000000000000000000000000"}) `shouldBe` Yellow
