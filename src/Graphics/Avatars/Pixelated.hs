@@ -13,20 +13,22 @@
 -- into an MD5 checksum, which is used as the seed value.
 --
 -- Once a Seed has been created, an Avatar can be generated from it by passing
--- it into `generateAvatar`. The generated Avatar can then be saved to a file
--- by running `saveAvatar`.
+-- it into `generateAvatar`. By default, Avatars start at a size of 8x8px. The
+-- size of an Avatar can be increased by passing it into `scaleAvatar`. Once
+-- you have scaled the Avatar to the size you want it to be it can then be
+-- saved to a file by passing it into `saveAvatar`.
 --
 -- = Example
 -- The following is an example showing how to construct a function which will
--- generate an avatar from a given seed string, and save it at the given
--- location.
+-- generate a 256x256px avatar from a given seed string, and save it at the
+-- given location.
 --
 -- @
 -- import Graphics.Avatars.Pixelated
 --
 -- createAndSaveAvatar :: String -> FilePath -> IO ()
 -- createAndSaveAvatar s path = saveAvatar avatar path
---   where avatar = generateAvatar seed
+--   where avatar = scaleAvatar 32 $ generateAvatar seed
 --         seed   = createSeed s
 -- @
 module Graphics.Avatars.Pixelated
@@ -34,20 +36,24 @@ module Graphics.Avatars.Pixelated
   -- * Types
   -- ** Seed
   Seed(..), createSeed,
-  
+
   -- ** Avatar
-  Avatar(..), generateAvatar, saveAvatar,
+  Avatar(..), generateAvatar, scaleAvatar, saveAvatar, convertAvatarToImage,
 
   -- ** Color
-  Color(..), colorFromSeed,
+  Color(..), getColorValue, colorFromSeed,
   
-  -- ** AvatarGrid
-  AvatarGrid(..), showGrid, generateAvatarGrid
+  -- ** Avatar Grid
+  AvatarGrid(..), showGrid, generateAvatarGrid,
+
+  -- ** Utility
+  scaleList
 )
 where
 
-import Codec.Picture (DynamicImage)
+import Codec.Picture (encodePng, generateImage, Image(..), PixelRGB8(..))
 import Data.Char (ord)
+import qualified Data.ByteString.Lazy as B (writeFile)
 import Data.ByteString.Lazy.Internal (packChars)
 import Data.Digest.Pure.MD5 (md5)
 import Data.List.Split (chunksOf)
@@ -73,14 +79,30 @@ createSeed = Seed . show . md5 . packChars
 -- Avatars
 
 -- | A generated avatar.
-newtype Avatar = Avatar { unAvatar :: DynamicImage }
+data Avatar = Avatar {
+      color :: Color
+    , grid  :: AvatarGrid
+  }
+  deriving (Eq)
+
+instance Show Avatar where
+  show a = (show . color) a ++ "\n" ++ ((show . grid) a)
 
 -- | Generates an avatar from the given seed.
 generateAvatar :: Seed -> Avatar
-generateAvatar seed = undefined
- where avatar = undefined
-       color = undefined
-       grid = undefined
+generateAvatar seed = avatar
+ where avatar = Avatar {
+             color = aColor
+           , grid = aGrid
+         }
+       aColor = colorFromSeed seed
+       aGrid = generateAvatarGrid seed
+
+-- | Scales the given Avatar by the given scaling factor.
+scaleAvatar :: Int -> Avatar -> Avatar
+scaleAvatar factor avatar = avatar { grid = AvatarGrid scaledGrid }
+  where scaledGrid = ((scaleList factor) . (map (scaleList factor))) unscaledGrid
+        unscaledGrid = unAvatarGrid $ grid avatar
 
 -- | Saves the given avatar to the given file path.
 --
@@ -91,7 +113,17 @@ generateAvatar seed = undefined
 --   saveAvatar avatar path
 -- @
 saveAvatar :: Avatar -> FilePath -> IO ()
-saveAvatar avatar path = undefined
+saveAvatar avatar path = B.writeFile path image
+ where image = encodePng $ convertAvatarToImage avatar
+
+-- | Converts the given Avatar into an Image.
+convertAvatarToImage :: Avatar -> Image PixelRGB8
+convertAvatarToImage avatar = image
+  where image = generateImage getPixel dimension dimension
+        dimension = length colorGrid
+        getPixel x y = colorGrid !! y !! x
+        colorGrid = (map . map) (toPixel $ color avatar) $ unAvatarGrid $ grid avatar
+        toPixel c v = if v then getColorValue c else PixelRGB8 255 255 255
 
 -------------------------------------------------------------------------------
 -- Colors
@@ -99,6 +131,18 @@ saveAvatar avatar path = undefined
 -- | A color for an avatar.
 data Color = Black | Blue | Green | Grey | Orange | Purple | Red | Yellow
   deriving (Eq, Show)
+
+-- | Converts the given color into a RGB pixel representation.
+getColorValue :: Color -> PixelRGB8
+getColorValue c
+  | c == Black  = PixelRGB8 0   0   0
+  | c == Blue   = PixelRGB8 0   0   200
+  | c == Green  = PixelRGB8 0   200 0
+  | c == Grey   = PixelRGB8 150 150 150
+  | c == Orange = PixelRGB8 255 140 65
+  | c == Purple = PixelRGB8 130 0   130
+  | c == Red    = PixelRGB8 200 0   0
+  | otherwise   = PixelRGB8 230 230 0
 
 -- | Picks an avatar color using the given seed.
 --
@@ -187,3 +231,16 @@ numToGrid s = grid
   where grid = (map . map) convertToPixel $ (map . map) ord numGrid
         numGrid = chunksOf 4 s
         convertToPixel = (> ord '7')
+
+-------------------------------------------------------------------------------
+-- Utilities
+
+-- | Scales the given list by the given scaling factor.
+--
+-- >>> scaleList 2 [1, 2]
+-- [1,1,2,2]
+-- >>> scaleList 3 [0, 1]
+-- [0,0,0,1,1,1]
+scaleList :: Int -> [a] -> [a]
+scaleList _     []     = []
+scaleList factor (x:xs) = replicate factor x ++ scaleList factor xs

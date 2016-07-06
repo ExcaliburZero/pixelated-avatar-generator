@@ -6,7 +6,7 @@ import Graphics.Avatars.Pixelated
 
 createAndSaveAvatar :: String -> FilePath -> IO ()
 createAndSaveAvatar s path = saveAvatar avatar path
-  where avatar = generateAvatar seed
+  where avatar = scaleAvatar 32 $ generateAvatar seed
         seed   = createSeed s
 ```
 

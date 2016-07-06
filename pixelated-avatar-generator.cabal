@@ -37,6 +37,8 @@ test-suite unit-tests
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:       base
+                     , JuicyPixels >= 3.2.7
+                     , bytestring >= 0.10.6.0
                      , pixelated-avatar-generator
                      , hspec
                      , QuickCheck
