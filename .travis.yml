@@ -6,6 +6,7 @@ cache:
   directories:
     - $HOME/.stack
     - $HOME/.cabal
+    - $HOME/.ghc
 
 ghc:
   - 7.8
