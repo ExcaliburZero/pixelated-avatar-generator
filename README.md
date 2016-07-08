@@ -10,5 +10,39 @@ createAndSaveAvatar s path = saveAvatar avatar path
         seed   = createSeed s
 ```
 
+## Executable
+An example executable program that uses the library is also provided. It creates an avatar from a given seed string and saves the created `.png` image to a given file location.
+
+The executable can be compiled by running the following command:
+
+```
+$ stack build
+```
+
+The executable can then by run by running it with `stack exec` and providing it the desired filepath of the output file including the `.png` extension and a random seed string.
+
+```
+$ stack exec pixelated-avatar-generator image.png "Hello, World"
+Creating avatar at image.png
+Green
+█ ████ █
+        
+  ████  
+█  ██  █
+████████
+█ █  █ █
+█      █
+████████
+Successfully created avatar, and saved it to image.png
+```
+
+### Usage
+```
+Usage: pixelated-avatar-generator FILEPATH SEEDSTRING
+
+FILEPATH   -- The location to save the generated avatar at. "img/test.png"
+SEEDSTRING -- The string to use to generate the avatar. "Hello"
+```
+
 ## License
-The source code of pixelated Avatar Generator is available under the [MIT license](https://opensource.org/licenses/MIT), see `LICENSE` for more information.
+The source code of Pixelated Avatar Generator is available under the [MIT license](https://opensource.org/licenses/MIT), see `LICENSE` for more information.
