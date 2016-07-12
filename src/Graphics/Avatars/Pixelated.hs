@@ -149,10 +149,10 @@ getColorValue c
 -- >>> colorFromSeed $ Seed {unSeed = "8b1a9953c4611296a827abf8c47804d7"}
 -- Orange
 colorFromSeed :: Seed -> Color
-colorFromSeed seed = color avg
+colorFromSeed seed = genColor avg
   where digits = take 2 $ unSeed seed
         avg = (((ord . head) digits) + ((ord . last) digits)) `div` 2
-        color a
+        genColor a
           | a < ord '2'  = Black
           | a < ord '4'  = Blue
           | a < ord '6'  = Green
@@ -227,9 +227,9 @@ generateAvatarGridSide = AvatarGridSide . numToGrid . unSeed
 
 -- | Converts the given hexidecimal number String into a grid of boolean values.
 numToGrid :: String -> [[Bool]]
-numToGrid s = grid
-  where grid = (map . map) convertToPixel $ (map . map) ord numGrid
-        numGrid = chunksOf 4 s
+numToGrid s = boolGrid
+  where boolGrid = (map . map) convertToPixel $ (map . map) ord numGrid
+        numGrid  = chunksOf 4 s
         convertToPixel = (> ord '7')
 
 -------------------------------------------------------------------------------
