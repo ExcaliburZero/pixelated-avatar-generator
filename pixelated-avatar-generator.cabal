@@ -19,6 +19,7 @@ stability:           Experimental
 category:            Image, Graphics
 build-type:          Simple
 extra-source-files:  README.md
+                     CHANGELOG.md
                      example_image.png
                      test/Graphics/Avatars/helloAvatar.png
 cabal-version:       >=1.10
