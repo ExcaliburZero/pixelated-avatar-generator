@@ -32,7 +32,7 @@ spec = do
       helloAvatar == helloAvatar `shouldBe` True
       helloAvatar /= testAvatar  `shouldBe` True
     it "can be converted into a string representation" $ do
-      show helloAvatar `shouldBe` "Orange\n" ++ helloAvatarGridString
+      show helloAvatar `shouldBe` "Grey\n" ++ helloAvatarGridString
 
   describe "generateAvatar" $ do
     it "generates an avatar from a seed" $ do
@@ -51,23 +51,23 @@ spec = do
 
   describe "colorFromSeed" $ do
     it "picks a color based on the given seed" $ do
-      colorFromSeed (Seed {unSeed = "d41d8cd98f00b204e9800998ecf8427e"}) `shouldBe` Orange
+      colorFromSeed (helloSeed) `shouldBe` Grey
     it "can choose Black" $ do
-      colorFromSeed (Seed {unSeed = "01000000000000000000000000000000"}) `shouldBe` Black
+      colorFromSeed (Seed {unSeed = "c4000000000000000000000000000000"}) `shouldBe` Black
     it "can choose Blue" $ do
-      colorFromSeed (Seed {unSeed = "23000000000000000000000000000000"}) `shouldBe` Blue
+      colorFromSeed (Seed {unSeed = "ec000000000000000000000000000000"}) `shouldBe` Blue
     it "can choose Green" $ do
-      colorFromSeed (Seed {unSeed = "45000000000000000000000000000000"}) `shouldBe` Green
+      colorFromSeed (Seed {unSeed = "a8000000000000000000000000000000"}) `shouldBe` Green
     it "can choose Grey" $ do
-      colorFromSeed (Seed {unSeed = "67000000000000000000000000000000"}) `shouldBe` Grey
+      colorFromSeed (Seed {unSeed = "aa000000000000000000000000000000"}) `shouldBe` Grey
     it "can choose Orange" $ do
-      colorFromSeed (Seed {unSeed = "89000000000000000000000000000000"}) `shouldBe` Orange
+      colorFromSeed (Seed {unSeed = "c8000000000000000000000000000000"}) `shouldBe` Orange
     it "can choose Purple" $ do
-      colorFromSeed (Seed {unSeed = "ab000000000000000000000000000000"}) `shouldBe` Purple
+      colorFromSeed (Seed {unSeed = "c9000000000000000000000000000000"}) `shouldBe` Purple
     it "can choose Red" $ do
-      colorFromSeed (Seed {unSeed = "cd000000000000000000000000000000"}) `shouldBe` Red
+      colorFromSeed (Seed {unSeed = "c2000000000000000000000000000000"}) `shouldBe` Red
     it "can choose Yellow" $ do
-      colorFromSeed (Seed {unSeed = "ef000000000000000000000000000000"}) `shouldBe` Yellow
+      colorFromSeed (Seed {unSeed = "8f000000000000000000000000000000"}) `shouldBe` Yellow
 
   describe "getColorValue" $ do
     it "returns a pixel representation of a color" $ do
@@ -117,7 +117,7 @@ helloSeed = Seed {unSeed = "8b1a9953c4611296a827abf8c47804d7"}
 
 helloAvatar :: Avatar
 helloAvatar = Avatar {
-      color = Orange
+      color = Grey
     , grid  = helloAvatarGrid
   }
 

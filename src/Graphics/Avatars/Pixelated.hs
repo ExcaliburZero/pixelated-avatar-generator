@@ -130,7 +130,7 @@ convertAvatarToImage avatar = image
 
 -- | A color for an avatar.
 data Color = Black | Blue | Green | Grey | Orange | Purple | Red | Yellow
-  deriving (Eq, Show)
+  deriving (Eq, Show, Enum)
 
 -- | Converts the given color into a RGB pixel representation.
 getColorValue :: Color -> PixelRGB8
@@ -147,20 +147,12 @@ getColorValue c
 -- | Picks an avatar color using the given seed.
 --
 -- >>> colorFromSeed $ Seed {unSeed = "8b1a9953c4611296a827abf8c47804d7"}
--- Orange
+-- Grey
 colorFromSeed :: Seed -> Color
-colorFromSeed seed = genColor avg
-  where digits = take 2 $ unSeed seed
-        avg = (((ord . head) digits) + ((ord . last) digits)) `div` 2
-        genColor a
-          | a < ord '2'  = Black
-          | a < ord '4'  = Blue
-          | a < ord '6'  = Green
-          | a < ord '8'  = Grey
-          | a < ord 'a'  = Orange
-          | a < ord 'c'  = Purple
-          | a < ord 'e'  = Red
-          | otherwise    = Yellow
+colorFromSeed = genColor . dSum . unSeed
+  where twoDigits n = map ord $ take 2 n
+        dSum n = foldr (+) 1 $ twoDigits n
+        genColor a = [Black .. Yellow] !! (a `mod` 8)
 
 -------------------------------------------------------------------------------
 -- AvatarGrids

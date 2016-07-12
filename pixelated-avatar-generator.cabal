@@ -2,7 +2,7 @@ name:                pixelated-avatar-generator
 version:             0.1.0
 synopsis:            A library and application for generating pixelated avatars.
 description:
-                     <<data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX/jEH///8Wo1baAAAAUElEQVRo3u3XsQ0AIAgAQfZfGhsLoxAH4L7CeLXBiF1mZjUHAADAFQAAQHX5IAAARoLzUM4AAIwF9igAAH5AkqruR6NdLgAAGAX8swAAaMACTyHw4mh6Rv4AAAAASUVORK5CYII=>>
+                     <<data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEWWlpb///+oiwZLAAAAUElEQVRo3u3XsQ0AIAgAQfZfGhsLoxAH4L7CeLXBiF1mZjUHAADAFQAAQHX5IAAARoLzUM4AAIwF9igAAH5AkqruR6NdLgAAGAX8swAAaMACTyHw4mh6Rv4AAAAASUVORK5CYII=>>
 
                      .
 

@@ -26,7 +26,7 @@ The executable can then by run by running it with `stack exec` and providing it 
 ```
 $ stack exec pixelated-avatar-generator image.png "Hello, World"
 Creating avatar at image.png
-Green
+Grey
 █ ████ █
         
   ████  
