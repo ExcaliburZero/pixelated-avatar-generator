@@ -1,16 +1,26 @@
 name:                pixelated-avatar-generator
 version:             0.1.0
-synopsis:            Initial project template from stack, using hspec and quickcheck
-description:         Please see README.md
+synopsis:            A library and application for generating pixelated avatars.
+description:
+                     <<data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX/jEH///8Wo1baAAAAUElEQVRo3u3XsQ0AIAgAQfZfGhsLoxAH4L7CeLXBiF1mZjUHAADAFQAAQHX5IAAARoLzUM4AAIwF9igAAH5AkqruR6NdLgAAGAX8swAAaMACTyHw4mh6Rv4AAAAASUVORK5CYII=>>
+
+                     .
+
+                     Pixelated Avatar Generator is a library and application
+                     for generating pixelated avatar images from seed strings.
 homepage:            https://github.com/ExcaliburZero/pixelated-avatar-generator
+bug-reports:         https://github.com/ExcaliburZero/pixelated-avatar-generator/issues
 license:             MIT
 license-file:        LICENSE
 author:              Christopher Wells
 maintainer:          cwellsny@nycap.rr.com
 copyright:           2016 Christopher Wells
-category:            Development
+stability:           Experimental
+category:            Image, Graphics
 build-type:          Simple
--- extra-source-files:
+extra-source-files:  README.md
+                     example_image.png
+                     test/Graphics/Avatars/helloAvatar.png
 cabal-version:       >=1.10
 
 library
@@ -36,6 +46,7 @@ test-suite unit-tests
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
+  other-modules:       Graphics.Avatars.PixelatedSpec
   build-depends:       base
                      , JuicyPixels >= 3.2.7
                      , bytestring >= 0.10.6.0
