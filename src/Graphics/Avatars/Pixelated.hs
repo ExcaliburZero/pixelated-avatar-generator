@@ -18,6 +18,11 @@
 -- you have scaled the Avatar to the size you want it to be it can then be
 -- saved to a file by passing it into `saveAvatar`.
 --
+-- By default, the `saveAvatar` function saves the avatar as a png image file,
+-- however you can also save avatars in other image formats by using
+-- `saveAvatarWith`. It allows you to specify the function to use to convert
+-- the avatar image into an image ByteString.
+--
 -- = Example
 -- The following is an example showing how to construct a function which will
 -- generate a 256x256px avatar from a given seed string, and save it at the
@@ -38,7 +43,7 @@ module Graphics.Avatars.Pixelated
   Seed(..), createSeed,
 
   -- ** Avatar
-  Avatar(..), generateAvatar, scaleAvatar, saveAvatar, convertAvatarToImage,
+  Avatar(..), generateAvatar, scaleAvatar, saveAvatar, saveAvatarWith, convertAvatarToImage,
 
   -- ** Color
   Color(..), getColorValue, colorFromSeed,
@@ -53,7 +58,7 @@ where
 
 import Codec.Picture (encodePng, generateImage, Image(..), PixelRGB8(..))
 import Data.Char (ord)
-import qualified Data.ByteString.Lazy as B (writeFile)
+import qualified Data.ByteString.Lazy as B (ByteString, writeFile)
 import Data.ByteString.Lazy.Internal (packChars)
 import Data.Digest.Pure.MD5 (md5)
 import Data.List.Split (chunksOf)
@@ -104,7 +109,7 @@ scaleAvatar factor avatar = avatar { grid = AvatarGrid scaledGrid }
   where scaledGrid = ((scaleList factor) . (map (scaleList factor))) unscaledGrid
         unscaledGrid = unAvatarGrid $ grid avatar
 
--- | Saves the given avatar to the given file path.
+-- | Saves the given avatar as a png image file to the given file path.
 --
 -- @
 -- makeAvatar :: Seed -> FilePath -> IO ()
@@ -113,8 +118,24 @@ scaleAvatar factor avatar = avatar { grid = AvatarGrid scaledGrid }
 --   saveAvatar avatar path
 -- @
 saveAvatar :: Avatar -> FilePath -> IO ()
-saveAvatar avatar path = B.writeFile path image
- where image = encodePng $ convertAvatarToImage avatar
+saveAvatar = saveAvatarWith encodePng
+
+-- | Saves the given avatar to the given file location, using the given
+-- function to encode it into a specific image format.
+--
+-- Some examples of encoding functions are `Codec.Picture.Tiff.encodeTiff` and
+-- `Codec.Picture.Png.encodePng`.
+--
+-- @
+-- saveTiffAvatar :: Seed -> FilePath -> IO ()
+-- saveTiffAvatar seed path = do
+--   let avatar = generateAvatar seed path
+--   saveAvatarWith encodeTiff avatar path
+-- @
+saveAvatarWith :: (Image PixelRGB8 -> B.ByteString) -> Avatar -> FilePath -> IO ()
+saveAvatarWith conversion avatar path = do
+  let image = conversion $ convertAvatarToImage avatar
+  B.writeFile path image
 
 -- | Converts the given Avatar into an Image.
 convertAvatarToImage :: Avatar -> Image PixelRGB8
