@@ -4,7 +4,9 @@ import Test.Hspec
 import Test.QuickCheck
 
 import Codec.Picture
-import qualified Data.ByteString.Lazy as B (ByteString(..))
+import Data.String (IsString(..))
+import qualified Data.ByteString.Lazy as B (ByteString(..), readFile)
+import System.IO (hGetContents)
 import System.IO.Unsafe (unsafePerformIO)
 
 import Graphics.Avatars.Pixelated
@@ -44,7 +46,22 @@ spec = do
 
   describe "convertAvatarToImage" $ do
     it "converts an avatar into an image" $ do
-      encodePng (convertAvatarToImage helloAvatar) `shouldBe` helloAvatarImage
+      encodePng (convertAvatarToImage helloAvatar) `shouldBe` helloAvatarImagePng
+
+  ----------------------------------------
+  -- Image Conversion
+
+  describe "encodeToPng" $ do
+    it "can encode an image into png format" $ do
+      (encodeToPng . convertAvatarToImage) helloAvatar `shouldBe` helloAvatarImagePng
+
+  describe "encodeToGif" $ do
+    it "can encode an image into gif format" $ do
+      (encodeToGif . convertAvatarToImage) helloAvatar `shouldBe` helloAvatarImageGif
+
+  describe "encodeToTiff" $ do
+    it "can encode an image into tiff format" $ do
+      (encodeToTiff . convertAvatarToImage) helloAvatar `shouldBe` helloAvatarImageTiff
 
   -----------------------------------------------------------------------------
   -- Colors
@@ -145,10 +162,14 @@ helloAvatarGridString = (init . unlines) [
   , "  █  █  "
   ]
 
-helloAvatarImage :: B.ByteString
-helloAvatarImage = image
-  where image = unRight $ encodeDynamicPng bytestring
-        bytestring = unRight $ unsafePerformIO $ readImage "test/Graphics/Avatars/helloAvatar.png"
+helloAvatarImagePng :: B.ByteString
+helloAvatarImagePng = unsafePerformIO $ B.readFile "test/Graphics/Avatars/helloAvatar.png"
+
+helloAvatarImageGif :: B.ByteString
+helloAvatarImageGif = unsafePerformIO $ B.readFile "test/Graphics/Avatars/helloAvatar.gif"
+
+helloAvatarImageTiff :: B.ByteString
+helloAvatarImageTiff = unsafePerformIO $ B.readFile "test/Graphics/Avatars/helloAvatar.tiff"
 
 testAvatar :: Avatar
 testAvatar = Avatar {

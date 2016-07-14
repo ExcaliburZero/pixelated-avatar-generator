@@ -45,6 +45,9 @@ module Graphics.Avatars.Pixelated
   -- ** Avatar
   Avatar(..), generateAvatar, scaleAvatar, saveAvatar, saveAvatarWith, convertAvatarToImage,
 
+  -- *** Image Conversion
+  ImageConversion, encodeToPng, encodeToGif, encodeToTiff,
+
   -- ** Color
   Color(..), getColorValue, colorFromSeed,
   
@@ -56,7 +59,7 @@ module Graphics.Avatars.Pixelated
 )
 where
 
-import Codec.Picture (encodePng, generateImage, Image(..), PixelRGB8(..))
+import Codec.Picture (encodeColorReducedGifImage, encodePng, encodeTiff, generateImage, Image(..), PixelRGB8(..))
 import Data.Char (ord)
 import qualified Data.ByteString.Lazy as B (ByteString, writeFile)
 import Data.ByteString.Lazy.Internal (packChars)
@@ -118,13 +121,12 @@ scaleAvatar factor avatar = avatar { grid = AvatarGrid scaledGrid }
 --   saveAvatar avatar path
 -- @
 saveAvatar :: Avatar -> FilePath -> IO ()
-saveAvatar = saveAvatarWith encodePng
+saveAvatar = saveAvatarWith encodeToPng
 
 -- | Saves the given avatar to the given file location, using the given
 -- function to encode it into a specific image format.
 --
--- Some examples of encoding functions are `Codec.Picture.Tiff.encodeTiff` and
--- `Codec.Picture.Png.encodePng`.
+-- Some examples of encoding functions are `encodeToGif` and `encodeToTiff`.
 --
 -- @
 -- saveTiffAvatar :: Seed -> FilePath -> IO ()
@@ -132,7 +134,7 @@ saveAvatar = saveAvatarWith encodePng
 --   let avatar = generateAvatar seed path
 --   saveAvatarWith encodeTiff avatar path
 -- @
-saveAvatarWith :: (Image PixelRGB8 -> B.ByteString) -> Avatar -> FilePath -> IO ()
+saveAvatarWith :: ImageConversion -> Avatar -> FilePath -> IO ()
 saveAvatarWith conversion avatar path = do
   let image = conversion $ convertAvatarToImage avatar
   B.writeFile path image
@@ -145,6 +147,26 @@ convertAvatarToImage avatar = image
         getPixel x y = colorGrid !! y !! x
         colorGrid = (map . map) (toPixel $ color avatar) $ unAvatarGrid $ grid avatar
         toPixel c v = if v then getColorValue c else PixelRGB8 255 255 255
+
+----------------------------------------
+-- Image Conversion
+
+-- | A function which converts an image into a lazy ByteString.
+type ImageConversion = (Image PixelRGB8 -> B.ByteString)
+
+-- | Converts an image into a Png image ByteString.
+encodeToPng :: ImageConversion
+encodeToPng = encodePng
+
+-- | Converts an image into a Gif image ByteString.
+encodeToGif :: ImageConversion
+encodeToGif img = case encodeColorReducedGifImage img of
+  Right i -> i
+  Left  _ -> error "Unable to create valid gif color palette for avatar image."
+
+-- | Converts an image into a Tiff image ByteString.
+encodeToTiff :: ImageConversion
+encodeToTiff = encodeTiff
 
 -------------------------------------------------------------------------------
 -- Colors
