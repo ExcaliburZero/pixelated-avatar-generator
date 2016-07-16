@@ -46,5 +46,8 @@ FILEPATH   -- The location to save the generated avatar at. "img/test.png"
 SEEDSTRING -- The string to use to generate the avatar. "Hello"
 ```
 
+## Links
+* [Pixelated Avatar Generator package on Hackage](https://hackage.haskell.org/package/pixelated-avatar-generator)
+
 ## License
 The source code of Pixelated Avatar Generator is available under the [MIT license](https://opensource.org/licenses/MIT), see `LICENSE` for more information.
