@@ -86,17 +86,34 @@ createSeed = Seed . show . md5 . packChars
 -------------------------------------------------------------------------------
 -- Avatars
 
--- | A generated avatar.
+-- | A generated avatar, comprised of a color and a grid representing the
+-- visual pattern of the avatar image. Can be created from a seed using
+-- `generateAvatar`.
+--
+-- Avatars are generated at a size of 8x8px, and can be scaled up to larger
+-- image sizes by using the `scaleAvatar` function.
 data Avatar = Avatar {
       color :: Color
     , grid  :: AvatarGrid
   }
   deriving (Eq)
 
+-- | Generates a String containing the color and pattern of the avatar.
 instance Show Avatar where
   show a = (show . color) a ++ "\n" ++ ((show . grid) a)
 
 -- | Generates an avatar from the given seed.
+--
+-- >>> generateAvatar Seed {unSeed = "8b1a9953c4611296a827abf8c47804d7"}
+-- Grey
+-- ██ ██ ██
+-- ██    ██
+-- █      █
+--   █  █  
+-- ██    ██
+-- ████████
+-- █  ██  █
+--   █  █  
 generateAvatar :: Seed -> Avatar
 generateAvatar seed = avatar
  where avatar = Avatar {
@@ -107,12 +124,19 @@ generateAvatar seed = avatar
        aGrid = generateAvatarGrid seed
 
 -- | Scales the given Avatar by the given scaling factor.
+--
+-- For example, scaling an 8x8px avatar by a factor of 4 would transform it
+-- into a 32x32px avatar.
 scaleAvatar :: Int -> Avatar -> Avatar
 scaleAvatar factor avatar = avatar { grid = AvatarGrid scaledGrid }
   where scaledGrid = ((scaleList factor) . (map (scaleList factor))) unscaledGrid
         unscaledGrid = unAvatarGrid $ grid avatar
 
--- | Saves the given avatar as a png image file to the given file path.
+-- | Saves the given avatar as a png image file to the given file path. The
+-- filepath should be the path and name of the image file to be created,
+-- including the file extension.
+--
+-- For saving an avatar in a non-png format, use `saveAvatarWith`.
 --
 -- @
 -- makeAvatar :: Seed -> FilePath -> IO ()
@@ -171,11 +195,15 @@ encodeToTiff = encodeTiff
 -------------------------------------------------------------------------------
 -- Colors
 
--- | A color for an avatar.
+-- | A color of an avatar. The color of an avatar is the color that is applied
+-- to the pattern of the avatar when it is converted into an image.
 data Color = Black | Blue | Green | Grey | Orange | Purple | Red | Yellow
   deriving (Eq, Show, Enum)
 
 -- | Converts the given color into a RGB pixel representation.
+--
+-- >>> getColorValue Orange
+-- PixelRGB8 255 140 65
 getColorValue :: Color -> PixelRGB8
 getColorValue c
   | c == Black  = PixelRGB8 0   0   0
@@ -188,6 +216,9 @@ getColorValue c
   | otherwise   = PixelRGB8 230 230 0
 
 -- | Picks an avatar color using the given seed.
+--
+-- Each of the eight possible colors has roughly an equal chance of being
+-- chosen with a random seed.
 --
 -- >>> colorFromSeed $ Seed {unSeed = "8b1a9953c4611296a827abf8c47804d7"}
 -- Grey
