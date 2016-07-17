@@ -22,6 +22,13 @@ spec = do
   -----------------------------------------------------------------------------
   -- Seeds
 
+  describe "Seed" $ do
+    it "can be tested for equality" $ do
+      helloSeed == helloSeed `shouldBe` True
+      helloSeed /= Seed {unSeed = "d41d8cd98f00b204e9800998ecf8427e"} `shouldBe` True
+    it "can be converted into a string representation" $ do
+      show helloSeed `shouldBe` "Seed {unSeed = \"8b1a9953c4611296a827abf8c47804d7\"}"
+
   describe "createSeed" $ do
     it "creates a seed using an md5 checksum" $ do
       createSeed "" `shouldBe` Seed {unSeed = "d41d8cd98f00b204e9800998ecf8427e"}
