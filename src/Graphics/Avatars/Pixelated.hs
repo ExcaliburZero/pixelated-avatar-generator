@@ -206,14 +206,14 @@ data Color = Black | Blue | Green | Grey | Orange | Purple | Red | Yellow
 -- PixelRGB8 255 140 65
 getColorValue :: Color -> PixelRGB8
 getColorValue c
-  | c == Black  = PixelRGB8 0   0   0
-  | c == Blue   = PixelRGB8 0   0   200
-  | c == Green  = PixelRGB8 0   200 0
+  | c == Black  = PixelRGB8 41  41  41
+  | c == Blue   = PixelRGB8 104 182 255
+  | c == Green  = PixelRGB8 114 220 131
   | c == Grey   = PixelRGB8 150 150 150
   | c == Orange = PixelRGB8 255 140 65
-  | c == Purple = PixelRGB8 130 0   130
-  | c == Red    = PixelRGB8 200 0   0
-  | otherwise   = PixelRGB8 230 230 0
+  | c == Purple = PixelRGB8 208 148 255
+  | c == Red    = PixelRGB8 255 87  87
+  | otherwise   = PixelRGB8 255 231 148
 
 -- | Picks an avatar color using the given seed.
 --

@@ -90,21 +90,21 @@ spec = do
     it "returns a pixel representation of a color" $ do
       getColorValue Orange `shouldBe` PixelRGB8 255 140 65
     it "can process Black" $ do
-      getColorValue Black `shouldBe` PixelRGB8 0 0 0
+      getColorValue Black `shouldBe` PixelRGB8 41 41 41
     it "can process Blue" $ do
-      getColorValue Blue `shouldBe` PixelRGB8 0 0 200
+      getColorValue Blue `shouldBe` PixelRGB8 104 182 255
     it "can process Green" $ do
-      getColorValue Green `shouldBe` PixelRGB8 0 200 0
+      getColorValue Green `shouldBe` PixelRGB8 114 220 131
     it "can process Grey" $ do
       getColorValue Grey `shouldBe` PixelRGB8 150 150 150
     it "can process Orange" $ do
       getColorValue Orange `shouldBe` PixelRGB8 255 140 65
     it "can process Purple" $ do
-      getColorValue Purple `shouldBe` PixelRGB8 130 0 130
+      getColorValue Purple `shouldBe` PixelRGB8 208 148 255
     it "can process Red" $ do
-      getColorValue Red `shouldBe` PixelRGB8 200 0 0
+      getColorValue Red `shouldBe` PixelRGB8 255 87 87
     it "can process Yellow" $ do
-      getColorValue Yellow `shouldBe` PixelRGB8 230 230 0
+      getColorValue Yellow `shouldBe` PixelRGB8 255 231 148
 
   -----------------------------------------------------------------------------
   -- Avatar Grids
