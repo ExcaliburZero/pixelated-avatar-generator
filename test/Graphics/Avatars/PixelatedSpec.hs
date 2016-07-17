@@ -116,6 +116,11 @@ spec = do
   -----------------------------------------------------------------------------
   -- Avatar Grids
 
+  describe "AvatarGrid" $ do
+    it "can be tested for equality" $ do
+      helloAvatarGrid == helloAvatarGrid `shouldBe` True
+      helloAvatarGrid /= AvatarGrid {unAvatarGrid = [[False]]} `shouldBe` True
+
   describe "generateAvatarGrid" $ do
     it "creates an avatar grid from a seed" $ do
       generateAvatarGrid helloSeed `shouldBe` helloAvatarGrid

@@ -243,10 +243,6 @@ instance Show AvatarGrid where
 -- | The left half of an AvatarGrid.
 newtype AvatarGridSide = AvatarGridSide { unAvatarGridSide :: [[Bool]] }
 
--- | Converts the grid side into a String representation.
-instance Show AvatarGridSide where
-  show x = (showGrid . unAvatarGridSide) x
-
 -- | Converts a grid of boolean values into a String representation.
 --
 -- >>> putStrLn $ showGrid [[True, False], [False, True]]
