@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.2
+* Add missing test files to Cabal config, to allow tests to pass from Hackage package.
+
 ## 0.1.1
 * Implement saving with different image formats.
 * Add image format conversion functions for PNG, GIF, and TIFF.
