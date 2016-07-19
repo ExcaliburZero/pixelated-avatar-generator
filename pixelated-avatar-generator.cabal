@@ -23,6 +23,8 @@ extra-source-files:  README.md
                      CONTRIBUTING.md
                      example_image.png
                      test/Graphics/Avatars/helloAvatar.png
+                     test/Graphics/Avatars/helloAvatar.gif
+                     test/Graphics/Avatars/helloAvatar.tiff
 cabal-version:       >=1.10
 
 library
