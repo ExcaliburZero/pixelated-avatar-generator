@@ -100,7 +100,7 @@ data Avatar = Avatar {
 
 -- | Generates a String containing the color and pattern of the avatar.
 instance Show Avatar where
-  show a = (show . color) a ++ "\n" ++ ((show . grid) a)
+  show a = (show . color) a ++ "\n" ++ (show . grid) a
 
 -- | Generates an avatar from the given seed.
 --
@@ -129,7 +129,7 @@ generateAvatar seed = avatar
 -- into a 32x32px avatar.
 scaleAvatar :: Int -> Avatar -> Avatar
 scaleAvatar factor avatar = avatar { grid = AvatarGrid scaledGrid }
-  where scaledGrid = ((scaleList factor) . (map (scaleList factor))) unscaledGrid
+  where scaledGrid = (scaleList factor . map (scaleList factor)) unscaledGrid
         unscaledGrid = unAvatarGrid $ grid avatar
 
 -- | Saves the given avatar as a png image file to the given file path. The
@@ -238,14 +238,14 @@ newtype AvatarGrid = AvatarGrid { unAvatarGrid :: [[Bool]] }
 
 -- | Converts the grid into a String representation.
 instance Show AvatarGrid where
-  show x = (showGrid . unAvatarGrid) x
+  show = showGrid . unAvatarGrid
 
 -- | The left half of an AvatarGrid.
 newtype AvatarGridSide = AvatarGridSide { unAvatarGridSide :: [[Bool]] }
 
 -- | Converts the grid side into a String representation.
 instance Show AvatarGridSide where
-  show x = (showGrid . unAvatarGridSide) x
+  show = showGrid . unAvatarGridSide
 
 -- | Converts a grid of boolean values into a String representation.
 --
@@ -285,7 +285,7 @@ generateAvatarGrid = mirrorGrid . generateAvatarGridSide
 -- y-axis.
 mirrorGrid :: AvatarGridSide -> AvatarGrid
 mirrorGrid side = AvatarGrid $ map mirror $ unAvatarGridSide side
-  where mirror l = l ++ (reverse l)
+  where mirror l = l ++ reverse l
 
 -- | Generates the right side of an AvatarGrid using the given seed.
 generateAvatarGridSide :: Seed -> AvatarGridSide
@@ -294,7 +294,7 @@ generateAvatarGridSide = AvatarGridSide . numToGrid . unSeed
 -- | Converts the given hexidecimal number String into a grid of boolean values.
 numToGrid :: String -> [[Bool]]
 numToGrid s = boolGrid
-  where boolGrid = (map . map) convertToPixel $ (map . map) ord numGrid
+  where boolGrid = (map . map) (convertToPixel . ord) numGrid
         numGrid  = chunksOf 4 s
         convertToPixel = (> ord '7')
 
