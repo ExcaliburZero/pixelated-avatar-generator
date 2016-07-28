@@ -62,9 +62,9 @@ where
 import Codec.Picture (encodeColorReducedGifImage, encodePng, encodeTiff, generateImage, Image(..), PixelRGB8(..))
 import Data.Char (ord)
 import qualified Data.ByteString.Lazy as B (ByteString, writeFile)
-import Data.ByteString.Lazy.Internal (packChars)
 import Data.Digest.Pure.MD5 (md5)
 import Data.List.Split (chunksOf)
+import Data.String (fromString)
 
 -------------------------------------------------------------------------------
 -- Seeds
@@ -81,7 +81,7 @@ newtype Seed = Seed { unSeed :: String }
 -- >>> createSeed "Hello"
 -- Seed {unSeed = "8b1a9953c4611296a827abf8c47804d7"}
 createSeed :: String -> Seed
-createSeed = Seed . show . md5 . packChars
+createSeed = Seed . show . md5 . fromString
 
 -------------------------------------------------------------------------------
 -- Avatars
