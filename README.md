@@ -33,37 +33,35 @@ The generated html documentation can then be found in the following directory:
 ```
 
 ## Executable
-An example executable program that uses the library is also provided. It creates an avatar from a given seed string and saves the created `.png` image to a given file location.
+An executable program for generating avatar image files is also provided. It can generate several avatar images concurrently to given file locations.
 
-The executable can be compiled by running the following command:
-
-```
-$ stack build
-```
-
-The executable can then by run by running it with `stack exec` and providing it the desired filepath of the output file including the `.png` extension and a random seed string.
+The executable can be installed along with the library by running the following command:
 
 ```
-$ stack exec pixelated-avatar-generator image.png "Hello, World"
-Creating avatar at image.png
-Grey
-█ ████ █
-        
-  ████  
-█  ██  █
-████████
-█ █  █ █
-█      █
-████████
-Successfully created avatar, and saved it to image.png
+$ stack install pixelated-avatar-generator
 ```
+
+The executable can then by run by calling it with the desired filepath(s) of the output file(s) including the `.png` extension.
+
+```
+$ pixelated-avatar-generator image1.png image2.png
+Successfully created 2 avatars.
+```
+
+By default, the avatars are at a size of 256x256px. Though the size can be changed by using a custom scaling factor via the `--scaling-factor` flag.
 
 ### Usage
 ```
-Usage: pixelated-avatar-generator FILEPATH SEEDSTRING
+Usage: pixelated-avatar-generator FILEPATH_1 [FILEPATH_2] [FILEPATH_3] ...
 
-FILEPATH   -- The location to save the generated avatar at. "img/test.png"
-SEEDSTRING -- The string to use to generate the avatar. "Hello"
+FILEPATH_(1...)   -- The locations to save generated avatars at. "img/test.png"
+
+Options:
+
+     --scaling-factor
+         Use a custom scaling factor. The scaling factor is multiplied by 8 to
+         get the dimensions of the image. For example, a scaling factor of 4
+         would yield a 32x32px image. The default scaling factor is 32.
 ```
 
 ## Links
