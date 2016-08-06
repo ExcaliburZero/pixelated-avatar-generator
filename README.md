@@ -1,4 +1,4 @@
-# Pixelated Avatar Generator [![Travis CI Status](https://api.travis-ci.org/ExcaliburZero/pixelated-avatar-generator.svg)](https://travis-ci.org/ExcaliburZero/pixelated-avatar-generator) [![Coverage Status](https://coveralls.io/repos/github/ExcaliburZero/pixelated-avatar-generator/badge.svg?branch=master)](https://coveralls.io/github/ExcaliburZero/pixelated-avatar-generator?branch=master)
+# Pixelated Avatar Generator [![Travis CI Status](https://api.travis-ci.org/ExcaliburZero/pixelated-avatar-generator.svg)](https://travis-ci.org/ExcaliburZero/pixelated-avatar-generator) [![Coverage Status](https://coveralls.io/repos/github/ExcaliburZero/pixelated-avatar-generator/badge.svg?branch=master)](https://coveralls.io/github/ExcaliburZero/pixelated-avatar-generator?branch=master) [![Hackage](https://img.shields.io/hackage/v/pixelated-avatar-generator.svg)](https://hackage.haskell.org/package/pixelated-avatar-generator) [![pixelated-avatar-generator on Stackage Nightly](https://www.stackage.org/package/pixelated-avatar-generator/badge/nightly)](http://stackage.org/nightly/package/pixelated-avatar-generator)
 Pixelated Avatar Generator is a Haskell library and application for generating pixelated avatar images from seed values.
 
 ```haskell
@@ -63,9 +63,6 @@ Options:
          get the dimensions of the image. For example, a scaling factor of 4
          would yield a 32x32px image. The default scaling factor is 32.
 ```
-
-## Links
-* [Pixelated Avatar Generator package on Hackage](https://hackage.haskell.org/package/pixelated-avatar-generator)
 
 ## License
 The source code of Pixelated Avatar Generator is available under the [MIT license](https://opensource.org/licenses/MIT), see `LICENSE` for more information.
