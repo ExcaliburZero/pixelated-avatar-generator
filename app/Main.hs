@@ -50,8 +50,9 @@ scalingFlagDescription = unwords
 -- "Successfully created 2 avatars."
 createSuccessMessage :: [FilePath] -> String
 createSuccessMessage paths = message
-  where numberOfAvatars = (show . length) paths
-        message = unwords ["Successfully created", numberOfAvatars, "avatars."]
+  where
+    message = unwords ["Successfully created", numberOfAvatars, "avatars."]
+    numberOfAvatars = (show . length) paths
 
 -- | Creates and saves a random avatar at the given filepath using the given
 -- scaling factor.
@@ -79,9 +80,10 @@ saveCustomAvatar factor path string = do
 -- >>> scaleParser "-1"
 -- Left "The given String is not a positive integer"
 scaleParser :: String -> Either String Int
-scaleParser string = if isPosInt string
-                     then Right ((read :: String -> Int) string)
-                     else Left "The given String is not a positive integer"
- where isPosInt s   = isNaturalNum s && isNotZero s
-       isNaturalNum = all isDigit
-       isNotZero s  = not $ all (== '0') s
+scaleParser string
+    | isPosInt string = Right ((read :: String -> Int) string)
+    | otherwise       = Left "The given String is not a positive integer"
+  where
+    isPosInt s   = isNaturalNum s && isNotZero s
+    isNaturalNum = all isDigit
+    isNotZero s  = not $ all (== '0') s
