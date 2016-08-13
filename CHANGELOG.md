@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+* Create new executable program.
+* Make several small internal fixes.
+* Add badges for Hackage and Stackage to readme.
+
 ## 0.1.2
 * Add missing test files to Cabal config, to allow tests to pass from Hackage package.
 
