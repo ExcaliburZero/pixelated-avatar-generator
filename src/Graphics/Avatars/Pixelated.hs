@@ -127,6 +127,41 @@ generateAvatar seed = avatar
 --
 -- For example, scaling an 8x8px avatar by a factor of 4 would transform it
 -- into a 32x32px avatar.
+--
+-- ==== __Examples__
+--
+-- Basic usage:
+--
+-- >>> scaleAvatar 1 . generateAvatar . createSeed $ ""
+-- Blue
+-- █  ██  █
+-- ████████
+-- ██    ██
+-- █      █
+-- ███  ███
+--  ██████ 
+-- ████████
+--    ██   
+-- >>> scaleAvatar 2 . generateAvatar . createSeed $ ""
+-- Blue
+-- ██    ████    ██
+-- ██    ████    ██
+-- ████████████████
+-- ████████████████
+-- ████        ████
+-- ████        ████
+-- ██            ██
+-- ██            ██
+-- ██████    ██████
+-- ██████    ██████
+--   ████████████  
+--   ████████████  
+-- ████████████████
+-- ████████████████
+--       ████      
+--       ████      
+--
+-- Using a scaling factor of 
 scaleAvatar :: Int -> Avatar -> Avatar
 scaleAvatar factor avatar = avatar { grid = AvatarGrid scaledGrid }
   where scaledGrid = (scaleList factor . map (scaleList factor)) unscaledGrid
@@ -303,10 +338,23 @@ numToGrid s = boolGrid
 
 -- | Scales the given list by the given scaling factor.
 --
+-- ==== __Examples__
+--
+-- Basic usage:
+--
 -- >>> scaleList 2 [1, 2]
 -- [1,1,2,2]
 -- >>> scaleList 3 [0, 1]
 -- [0,0,0,1,1,1]
+--
+-- Using a scaling factor less than one returns the original list.
+--
+-- >>> scaleList 0 [1,2]
+-- [1,2]
+-- >>> scaleList (-2) [1,2]
+-- [1,2]
 scaleList :: Int -> [a] -> [a]
-scaleList _     []     = []
-scaleList factor (x:xs) = replicate factor x ++ scaleList factor xs
+scaleList _     []      = []
+scaleList factor (x:xs)
+  | factor < 1 = x:xs
+  | otherwise  = replicate factor x ++ scaleList factor xs

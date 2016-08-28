@@ -1,6 +1,7 @@
 module Graphics.Avatars.PixelatedSpec (main, spec) where
 
 import Test.Hspec
+import Test.Hspec.QuickCheck
 import Test.QuickCheck
 
 import Codec.Picture
@@ -125,6 +126,21 @@ spec = do
      scaleList 3 [0, 1] `shouldBe` [0, 0, 0, 1, 1, 1]
    it "can scale a list by a factor of one" $ do
      scaleList 1 [0, 1] `shouldBe` [0, 1]
+   it "can scale a list by a factor of zero" $ do
+     scaleList 0 [0, 1] `shouldBe` [0, 1]
+   it "can scale a list by a negative factor" $ do
+     scaleList (-1) [0, 1] `shouldBe` [0, 1]
+   it "scales a list to an expected size" $ do
+     property scalesListLength
+
+scalesListLength :: Int -> [Int] -> Bool
+scalesListLength factor list =
+    length (scaleList factor list) == expectedLength
+  where
+    listLength     = length list
+    expectedLength = if factor > 1
+      then listLength * factor
+      else listLength
 
 -------------------------------------------------------------------------------
 -- Values
